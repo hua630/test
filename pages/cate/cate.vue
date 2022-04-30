@@ -43,6 +43,7 @@
     },
     onLoad(){
       const sysInfo=uni.getSystemInfoSync()
+      //获取屏幕可用高度（即屏幕高度-tabbar-bar)-搜索框高度
       this.wh=sysInfo.windowHeight
       
       this.getCateList()
@@ -69,7 +70,7 @@
         uni.navigateTo({
           url:'/subpkg/goods_list/goods_list?cid='+item3.cat_id
         })
-      }
+      },
     }
   }
 </script>

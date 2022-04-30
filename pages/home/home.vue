@@ -4,7 +4,7 @@
     <swiper :indicator-dots="true" :autoplay="true" :interval="2000" :duration="1000" :circular="true">
       <swiper-item v-for="(item,i) in swiperList" :key="i">
         <navigator class="swiper-item" :url="'/subpkg/goods_detail/goods_detail?goods_id='+item.goods_id">
-          <image :src="item.image"></image>
+          <image :src="item.image_src"></image>
         </navigator>
       </swiper-item>
     </swiper>
@@ -46,22 +46,7 @@
     data() {
       return {
         //这是轮播图的数据列表
-        swiperList: [{
-            i: 1,
-            image: '/static/swiperfood/pptone.jpg',
-            goods_id:11
-          },
-          {
-            i: 2,
-            image: '/static/swiperfood/ppttwo.jpg',
-            goods_id:12
-          },
-          {
-              i: 3,
-              image: '/static/swiperfood/pptthree.jpg',
-              goods_id:13
-            }
-        ],
+        swiperList: [],
         //分类导航的数据列表
         navList:[],
         //楼层数据
@@ -108,7 +93,7 @@
           })
         })
         this.floorList=res.message
-      }
+      },
     }
   }
 </script>
@@ -150,4 +135,5 @@
    display:flex;
    padding-left:10rpx;
  }
+ 
 </style>
