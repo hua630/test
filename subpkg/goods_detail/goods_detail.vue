@@ -30,14 +30,43 @@
 
     <!--商品导航组件区域-->
     <view class="goods_nav">
-      <uni-goods-nav :fill="true" :options="options" :buttonGroup="buttonGroup" @click="onClick" @buttonClick="buttonClick" />
+      <uni-goods-nav :fill="true" :options="options" :buttonGroup="buttonGroup" @click="onClick"
+        @buttonClick="buttonClick" />
     </view>
   </view>
   </view>
 </template>
 
 <script>
+  import {
+    mapState,
+    mapMutations,
+    mapGetters
+  } from 'vuex'
+
   export default {
+    computed: {
+      ...mapState('m_cart', []),
+      ...mapGetters('m_cart', ['total'])
+    },
+    watch: {
+      // total(newVal){
+      //   const findResult=this.options.find(x=>x.text==='购物车')
+      //   if(findResult){
+      //     findResult.info=newVal
+      //   }
+      // }
+      total: {
+        handler(newVal) {
+          const findResult = this.options.find(x => x.text === '购物车')
+          if (findResult) {
+            findResult.info = newVal
+          }
+        },
+        immediate: true
+      }
+    },
+
     data() {
       return {
         goods_info: {},
@@ -69,6 +98,7 @@
       this.getGoodsDetail(goods_id)
     },
     methods: {
+      ...mapMutations('m_cart', ['addToCart']),
       async getGoodsDetail(goods_id) {
         const {
           data: res
@@ -88,11 +118,26 @@
           urls: this.goods_info.pics.map(x => x.pics_big)
         })
       },
-      onClick(e){
-        if(e.content.text==='购物车'){
+      onClick(e) {
+        if (e.content.text === '购物车') {
           uni.switchTab({
-            url:'/pages/cart/cart'
+            url: '/pages/cart/cart'
           })
+        }
+      },
+      buttonClick(e) {
+        if (e.content.text === '加入购物车') {
+          //组织商品的信息对象
+          const goods = {
+            goods_id: this.goods_info.goods_id,
+            goods_name: this.goods_info.goods_name,
+            goods_price: this.goods_info.goods_price,
+            goods_count: 1,
+            goods_small_logo: this.goods_info.goods_small_logo,
+            goods_state: true
+          }
+          //调用addToCart
+          this.addToCart(goods)
         }
       }
     }
@@ -112,8 +157,8 @@
   .goods-info-box {
     padding: 10px;
     padding-right: 0;
-  
-  .price {
+
+    .price {
       color: #C00000;
       font-size: 18px;
       margin: 10px 0;
@@ -146,15 +191,15 @@
       margin: 10px 0;
     }
   }
-  
-  .goods_nav{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
+
+  .goods_nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
   }
-  
-  .goods-detail-container{
-    padding-bottom:50px;
+
+  .goods-detail-container {
+    padding-bottom: 50px;
   }
 </style>
