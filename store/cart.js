@@ -20,9 +20,9 @@ export default{
       }
       this.commit('m_cart/saveToStorage')
     },
+    // 将购物车中的数据持久化存储到本地
       saveToStorage(state){
-        
-        uni.setStorageSync('cart',state.JSON.stringify(cart))
+        uni.setStorageSync('cart',JSON.stringify(state.cart))
       },
       //更新购物车中的商品勾选状态
       updateGoodsState(state,goods){
